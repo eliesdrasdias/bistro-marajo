@@ -157,7 +157,7 @@ main {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  min-height: auto;
+  min-height: 200px;
 }
 
 .menu-tabs {
@@ -192,13 +192,10 @@ main {
   padding-bottom: 10px;
 }
 
-/* --- GRID DO CARDÁPIO (Layout Mobile "Lado a Lado") --- */
 .menu-grid {
   display: grid;
-  /* O PULO DO GATO: Baixamos o mínimo de 300px para 160px.
-     Isso força o navegador a encaixar 2 cards em telas de celulares comuns (que têm ~360px de largura). */
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 15px; /* Gap menor para economizar espaço */
+  gap: 20px;
 }
 
 .menu-item {
@@ -211,36 +208,34 @@ main {
   flex-direction: column;
 }
 
+.menu-item:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-red);
+}
+
 .menu-item img {
   width: 100%;
-  height: 140px; /* Imagem mais baixa para não ocupar a tela toda */
+  height: 140px;
   object-fit: cover;
 }
 
 .item-info {
-  padding: 12px; /* Padding reduzido (era 20px) */
+  padding: 12px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
 .item-info h4 {
-  font-size: 1rem; /* Título mais compacto */
-  line-height: 1.2;
+  font-size: 1.2rem;
   margin-bottom: 5px;
 }
 
 .item-info p {
   color: var(--text-muted);
-  font-size: 0.8rem; /* Descrição menor */
-  margin-bottom: 10px;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
   flex-grow: 1;
-  
-  /* TRUQUE DE SÊNIOR: Limita o texto a 2 linhas e põe "..." se passar disso */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .item-footer {
@@ -248,8 +243,7 @@ main {
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid #333;
-  padding-top: 10px;
-  margin-top: auto; /* Garante que o preço fique sempre no rodapé do card */
+  padding-top: 15px;
 }
 
 .price {
@@ -262,30 +256,36 @@ main {
   background-color: #25D366;
   color: white;
   border: none;
-  width: 32px; /* Botão levemente menor */
-  height: 32px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  transition: transform 0.2s;
 }
 
-/* --- VERSÃO DESKTOP (Restaura o tamanho "Gourmet") --- */
+.btn-cart:hover {
+  transform: scale(1.1);
+}
+
+/* --- CORREÇÃO 3: VOLTAR AO TAMANHO GRANDE NO PC --- */
 @media (min-width: 768px) {
   .menu-grid {
-    /* No PC, voltamos para cards maiores e mais espaçosos */
+    /* No PC, volta para cards grandes (280px) */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
   }
 
   .menu-item:hover {
     transform: translateY(-5px);
+    border-color: var(--primary-red);
   }
 
   .menu-item img {
-    height: 220px;
+    height: 220px; /* Foto grande */
   }
 
   .item-info {
@@ -295,10 +295,13 @@ main {
   .item-info h4 {
     font-size: 1.3rem;
   }
-  
+
   .item-info p {
     font-size: 0.9rem;
-    -webkit-line-clamp: 3; /* No PC pode mostrar mais texto */
+    -webkit-line-clamp: 3; /* Mostra mais texto no PC */
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .price {
@@ -310,10 +313,6 @@ main {
     height: 40px;
     font-size: 1.2rem;
   }
-}
-
-.btn-cart:hover {
-  transform: scale(1.1);
 }
 
 /*UTILS JS*/
