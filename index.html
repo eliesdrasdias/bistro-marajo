@@ -4,108 +4,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Bistrô Marajó | Cardápio Digital</title>
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+
     <header>
-        <div class="title">
+        <div class="logo-container">
             <h1>Bistrô Marajó</h1>
+            <p>Culinária Afetiva</p>
         </div>
-        <div class="number">
-            <span style="font-size: 0.8rem; color: #666;">Aberto até as 14h</span>
-        </div>
+        <div class="status-badge open">Aberto Agora</div>
     </header>
 
-    <a href="https://wa.me/5591999999999" class="btn-whatsapp" target="_blank">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
-
     <main>
-        <section id="hero">
-
-            <div class="hero-texto">
-                <span class="tag-destaque">Culinária Afetiva</span>
-                <h1>O Melhor Almoço <br> da Semana</h1>
-                <p>Pratos feitos com carinho, ingredientes frescos e aquele tempero caseiro. <br>Refeições completas a
-                    partir de <strong>R$ 25,00</strong>.</p>
-
-                <div class="hero-buttons">
-                    <a href="https://wa.me/5591999999999?text=Olá!%20Gostaria%20de%20saber%20o%20cardápio%20de%20hoje."
-                        class="btn-hero" target="_blank">
-                        Ver Cardápio de Hoje <i class="fa-brands fa-whatsapp"></i>
-                    </a>
-                </div>
-
-                <p class="endereco-hero"><i class="fa-solid fa-location-dot"></i> Passagem Andrelino Nunes, 82</p>
+        <section id="hero-suggestion">
+            <div class="suggestion-text">
+                <span class="tag-destaque">⭐ Sugestão do Chef</span>
+                <h2>Filé de Dourada à Milanesa</h2>
+                <p>Acompanha arroz, feijão, farofa crocante, salada e vinagrete especial.</p>
+                <p class="price-hero">R$ 25,00</p>
+                <a href="" class="btn-cta">
+                    <!-- adicionar número futuramente https://wa.me/5591999999999?text=Olá, quero pedir a Sugestão do Chef! -->
+                    <i class="fab fa-whatsapp"></i> Pedir Agora
+                </a>
             </div>
-
-            <div class="hero-imagem">
-                <img src="https://placehold.co/300x300/D90429/white?text=Foto+do+Prato" alt="Almoço Paraense"
-                    class="img-flutuante">
+            <div class="suggestion-img">
+                <img src="assets/dourada-a-milanesa.jpg" alt="Filé de Dourada">
             </div>
-
         </section>
 
-        <section id="cardapio-dia" class="secao-padrao">
-            <div class="titulo-secao">
-                <h3>Sugestões do Chef</h3>
-                <p>Acompanha: Arroz, Feijão, Salada e Farofa.</p>
-            </div>
+        <!-- <nav class="menu-tabs">
+            <button class="tab-btn active" onclick="openMenu('almoco')">☀️ Almoço</button>
+            <button class="tab-btn" onclick="openMenu('jantar')">🌙 Jantar</button>
+        </nav> -->
 
-            <div class="lista-pratos">
+        <section id="almoco" class="menu-section active-section">
+            <h3 class="section-title">Para o seu Almoço</h3>
 
-                <article class="item-prato">
-                    <div class="detalhes">
+            <div class="menu-grid">
+                <article class="menu-item">
+                    <img src="assets/strogonoff.jpg" alt="Strogonoff">
+                    <div class="item-info">
                         <h4>Strogonoff de Alcatra</h4>
-                        <span class="descricao">Clássico cremoso com batata palha.</span>
+                        <p>Clássico cremoso.</p>
+                        <div class="item-footer">
+                            <span class="price">R$ 25,00</span>
+                            <button class="btn-cart"><i class="fab fa-whatsapp"></i></button>
+                        </div>
                     </div>
-                    <div class="preco">R$ 25,00</div>
                 </article>
 
-                <article class="item-prato destaque">
-                    <div class="detalhes">
+                <article class="menu-item">
+                    <img src="assets/alcatra.jpg" alt="Alcatra Acebolada">
+                    <div class="item-info">
                         <h4>Alcatra Acebolada</h4>
-                        <span class="descricao">Com fritas crocantes.</span>
-                        <span class="tag-popular">Mais Pedido</span>
+                        <p>Com fritas crocantes.</p>
+                        <div class="item-footer">
+                            <span class="price">R$ 30,00</span>
+                            <button class="btn-cart"><i class="fab fa-whatsapp"></i></button>
+                        </div>
                     </div>
-                    <div class="preco">R$ 30,00</div>
                 </article>
-
-                <article class="item-prato">
-                    <div class="detalhes">
-                        <h4>Filé de Dourada</h4>
-                        <span class="descricao">À milanesa com vinagrete fresco.</span>
-                    </div>
-                    <div class="preco">R$ 25,00</div>
-                </article>
-
-                <article class="item-prato">
-                    <div class="detalhes">
-                        <h4>Camarão Regional</h4>
-                        <span class="descricao">Refogado com legumes da terra.</span>
-                    </div>
-                    <div class="preco">R$ 25,00</div>
-                </article>
-
-                <div class="ver-mais-container">
-                    <a href="https://wa.me/5591999999999?text=Manda%20o%20cardapio%20completo" class="btn-secundario">
-                        Ver lista completa no WhatsApp
-                    </a>
-                </div>
-
             </div>
         </section>
+
+        <section id="jantar" class="menu-section hidden-section">
+            <h3 class="section-title">Especiais da Noite</h3>
+            <p style="color: #888; text-align: center;">Selecione a aba Jantar para ver as opções.</p>
+        </section>
+
     </main>
+
     <footer>
-        <div class="footer-content">
-            <p>&copy; 2026 Bistrô Marajó. Todos os direitos reservados.</p>
-            <p class="dev-credit">Desenvolvido por <a href="https://github.com/eliesdrasdias" target="_blank">Eliesdras
-                    Dias</a></p>
-        </div>
+        <p>📍 Passagem Andrelino Nunes, 82 - Breves, PA</p>
+        <p>&copy; 2026 Bistrô Marajó</p>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 
 </html>
