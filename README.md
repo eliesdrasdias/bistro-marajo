@@ -1,5 +1,7 @@
 # 🍽️ Bistrô Marajó - Presença Digital
 
+🚧 **Status do Projeto:** Em Desenvolvimento (*Work in Progress*). Cheguei no limite do meu conhecimento atual de HTML/CSS e o projeto está pausado enquanto avanço nos módulos de JavaScript na B7Web para finalizá-lo com qualidade.
+
 ## 🚀 Sobre o Projeto
 Projeto Front-End desenvolvido para resolver um problema real de negócio: a digitalização da presença online do **Bistrô Marajó**, um restaurante local. 
 
