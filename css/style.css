@@ -271,10 +271,9 @@ main {
   transform: scale(1.1);
 }
 
-/* --- CORREÇÃO 3: VOLTAR AO TAMANHO GRANDE NO PC --- */
+/* --- Responsividade --- */
 @media (min-width: 768px) {
   .menu-grid {
-    /* No PC, volta para cards grandes (280px) */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
   }
@@ -285,7 +284,7 @@ main {
   }
 
   .menu-item img {
-    height: 220px; /* Foto grande */
+    height: 220px;
   }
 
   .item-info {
@@ -298,7 +297,7 @@ main {
 
   .item-info p {
     font-size: 0.9rem;
-    -webkit-line-clamp: 3; /* Mostra mais texto no PC */
+    -webkit-line-clamp: 3;
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
