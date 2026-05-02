@@ -22,3 +22,29 @@ cardapio.forEach(function (prato) {
 });
 
 container.innerHTML = htmlDosPratos;
+
+const suggestion = document.querySelector('#hero-suggestion');
+
+let htmlSuggestion = '';
+
+cardapio.find(function (sugestao) {
+    if (sugestao.pratoDoDia == true) {
+        return htmlSuggestion += `
+    <div class="suggestion-text">
+                <span class="tag-destaque">⭐ Sugestão do Chef</span>
+                <h2>${sugestao.nome}</h2>
+                <p>${sugestao.descricao}</p>
+                <p class="price-hero">R$${sugestao.preco.toFixed(2)}</p>
+                <a href="" class="btn-cta">
+                    <!-- adicionar número futuramente https://wa.me/5591999999999?text=Olá, quero pedir a Sugestão do Chef! -->
+                    <i class="fab fa-whatsapp"></i> Pedir Agora
+                </a>
+            </div>
+            <div class="suggestion-img">
+                <img src="${sugestao.imagem}" alt="${sugestao.nome}">
+            </div>
+    `
+    }
+});
+
+suggestion.innerHTML = htmlSuggestion;

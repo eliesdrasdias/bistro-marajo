@@ -7,7 +7,7 @@ const cardapio = [
         turno: ['almoco'],
         categoria: 'comida_normal',
         imagem: 'assets/dourada-a-milanesa.jpg',
-        pratoDoDia: true
+        pratoDoDia: false
     },
 
     {
@@ -29,7 +29,7 @@ const cardapio = [
         turno: ['almoco'],
         categoria: 'comida_normal',
         imagem: 'assets/alcatra.jpg',
-        pratoDoDia: false
+        pratoDoDia: true
     },
 
     {
