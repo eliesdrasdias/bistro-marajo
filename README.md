@@ -1,37 +1,51 @@
-# 🍽️ Bistrô Marajó - Presença Digital
+#  Bistrô Marajó | Sistema de Cardápio Dinâmico
 
-🚧 **Status do Projeto:** Em Desenvolvimento (*Work in Progress*). Cheguei no limite do meu conhecimento atual de HTML/CSS e o projeto está pausado enquanto avanço nos módulos de JavaScript na B7Web para finalizá-lo com qualidade.
+ **Status do Projeto:** Em evolução para Full-Stack. (Fase 1: UI Concluída | Fase 2: Construção da API Backend em andamento).
 
-## 🚀 Sobre o Projeto
-Projeto Front-End desenvolvido para resolver um problema real de negócio: a digitalização da presença online do **Bistrô Marajó**, um restaurante local. 
+##  Sobre o Projeto
+Aplicação em desenvolvimento para resolver um problema real de negócio local: a modernização do atendimento do **Bistrô Marajó**. 
 
-O objetivo da aplicação foi substituir processos manuais e PDFs estáticos por uma interface web limpa, responsiva e de fácil acesso, permitindo que os clientes visualizem os pratos e entrem em contato de forma otimizada.
+O objetivo inicial foi substituir processos manuais e o envio de mensagens estáticas por uma interface web limpa e responsiva. Agora, o sistema está evoluindo com a construção de uma API RESTful no Backend para tornar o gerenciamento de pratos, preços e disponibilidade 100% dinâmico e autônomo.
 
-🔗 **https://eliesdrasdias.github.io/bistro-marajo/**
+🔗 **[Acesse a Interface (Fase 1)](https://eliesdrasdias.github.io/bistro-marajo/)**
 
-## 🛠️ Tecnologias Utilizadas
-O projeto foi construído utilizando as seguintes tecnologias:
-* **HTML5:** Estruturação semântica.
-* **CSS3:** Estilização e layout responsivo (adaptável para Mobile e Desktop).
-* **Git & GitHub:** Versionamento de código e *Deploy* via GitHub Pages.
+## 🛠️ Tecnologias do Ecossistema
 
-## ✨ Funcionalidades e Soluções
+**Backend (Fase 2 - Em Desenvolvimento):**
+* **Node.js & TypeScript:** Construção da API REST com tipagem estática para maior previsibilidade do código.
+* **Banco de Dados (SQL):** Modelagem estruturada das entidades do restaurante.
+
+**Frontend (Fase 1 - Concluída):**
+* **HTML5 & CSS3:** Estruturação semântica, variáveis CSS, Flexbox e Grid Layout.
+* **JavaScript:** Manipulação de datas em tempo real (indicador de Aberto/Fechado) e lógica de interface.
+
+**Infraestrutura:**
+* **Git & GitHub:** Versionamento de código e *Deploy* da interface via GitHub Pages.
+
+## 🗺️ Roadmap de Desenvolvimento (Backend)
+* [ ] Modelagem do banco de dados (Entidades: Pratos, Categorias, Status).
+* [ ] Criação de rotas da API REST (GET, POST, PUT, DELETE) com Express.
+* [ ] Implementação de tipagem rigorosa de dados (Interfaces/Types) com TypeScript.
+* [ ] Refatoração do Frontend para consumir os dados dinâmicos da API via `fetch`.
+
+## ✨ Funcionalidades Atuais
 * Interface 100% responsiva focada na experiência do usuário (UX) em dispositivos móveis.
-* Catálogo digital de serviços e pratos.
-* Otimização do fluxo de contato com o cliente.
+* Catálogo digital visual de pratos.
+* Indicador dinâmico de horário de funcionamento.
+* Otimização do fluxo de contato e pedidos direto para o WhatsApp do restaurante.
 
 ## 👨‍💻 Autor
 **Eliesdras Dias**
 * [LinkedIn](https://www.linkedin.com/in/eliesdras/)
 * [GitHub](https://github.com/eliesdrasdias)
 
-## ⚙️ Como executar o projeto localmente
+## ⚙️ Como executar a interface localmente
 
 ```bash
 # Clone este repositório
-git clone https://github.com/eliesdrasdias/bistro-marajo.git
+git clone [https://github.com/eliesdrasdias/bistro-marajo.git](https://github.com/eliesdrasdias/bistro-marajo.git)
 
-# Acesse a pasta do projeto no seu terminal
+# Acesse a pasta do projeto no terminal
 cd bistro-marajo
 
 # Execute o arquivo index.html no seu navegador ou via Live Server no VS Code
