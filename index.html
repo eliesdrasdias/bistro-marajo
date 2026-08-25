@@ -27,20 +27,20 @@
     <main>
         <section id="hero-suggestion"></section>
 
-        <!-- <nav class="menu-tabs">
-            <button class="tab-btn active" onclick="openMenu('almoco')">☀️ Almoço</button>
-            <button class="tab-btn" onclick="openMenu('jantar')">🌙 Jantar</button>
-        </nav> -->
+        <nav class="menu-tabs" aria-label="Período do cardápio">
+            <button class="tab-btn active" type="button" data-turno="almoco" aria-controls="almoco" aria-selected="true">☀️ Almoço</button>
+            <button class="tab-btn" type="button" data-turno="jantar" aria-controls="jantar" aria-selected="false">🌙 Jantar</button>
+        </nav>
 
         <section id="almoco" class="menu-section active-section">
             <h3 class="section-title">Para o seu Almoço</h3>
 
-            <div class="menu-grid"></div>
+            <div class="menu-grid" data-menu-grid="almoco" aria-live="polite"></div>
         </section>
 
         <section id="jantar" class="menu-section hidden-section">
             <h3 class="section-title">Especiais da Noite</h3>
-            <p style="color: #888; text-align: center;">Selecione a aba Jantar para ver as opções.</p>
+            <div class="menu-grid" data-menu-grid="jantar" aria-live="polite"></div>
         </section>
 
     </main>
@@ -50,7 +50,6 @@
         <p>&copy; 2026 Bistrô Marajó</p>
     </footer>
 
-    <script src="js/dados.js"></script>
     <script src="js/script.js"></script>
 </body>
 
