@@ -95,78 +95,86 @@
         </button>
       </div>
 
-      <div id="itens-carrinho" class="itens-carrinho"></div>
+      <div class="carrinho-body">
+        <div id="itens-carrinho" class="itens-carrinho"></div>
 
-      <div class="carrinho-resumo">
-        <div class="carrinho-total-linha">
-          <span>Subtotal</span>
-          <strong id="subtotal-carrinho">R$ 0,00</strong>
+        <div class="carrinho-resumo">
+          <div class="carrinho-total-linha">
+            <span>Subtotal</span>
+            <strong id="subtotal-carrinho">R$ 0,00</strong>
+          </div>
+          <div class="carrinho-total-linha">
+            <span>Taxa de Entrega</span>
+            <strong id="taxa-entrega">R$ 0,00</strong>
+          </div>
+          <div class="carrinho-total-linha carrinho-total-final">
+            <span>Total</span>
+            <strong id="total-carrinho">R$ 0,00</strong>
+          </div>
+
+          <form class="formulario-entrega" id="formulario-entrega" novalidate>
+            <h3>Entrega e pagamento</h3>
+
+            <div class="campo-formulario">
+              <label for="nome-cliente">Nome</label>
+              <input
+                id="nome-cliente"
+                name="nome"
+                type="text"
+                placeholder="Como podemos chamar você?"
+                autocomplete="name"
+                required
+              />
+            </div>
+
+            <div class="campo-formulario">
+              <label for="endereco-entrega">Endereço completo</label>
+              <input
+                id="endereco-entrega"
+                name="endereco"
+                type="text"
+                placeholder="Rua, número, bairro e complemento"
+                autocomplete="street-address"
+                required
+              />
+            </div>
+
+            <div class="campo-formulario">
+              <label for="forma-pagamento">Forma de pagamento</label>
+              <select id="forma-pagamento" name="pagamento">
+                <option value="Pix">Pix</option>
+                <option value="Cartão de Crédito">Cartão de Crédito</option>
+                <option value="Cartão de Débito">Cartão de Débito</option>
+                <option value="Dinheiro">Dinheiro</option>
+              </select>
+            </div>
+
+            <div class="campo-formulario campo-troco hidden" data-campo-troco>
+              <label for="troco">Troco para quanto?</label>
+              <input
+                id="troco"
+                name="troco"
+                type="number"
+                min="0"
+                step="0.01"
+                inputmode="decimal"
+                placeholder="0,00"
+                disabled
+              />
+            </div>
+          </form>
         </div>
-        <div class="carrinho-total-linha">
-          <span>Taxa de Entrega</span>
-          <strong id="taxa-entrega">R$ 0,00</strong>
-        </div>
-        <div class="carrinho-total-linha carrinho-total-final">
-          <span>Total</span>
-          <strong id="total-carrinho">R$ 0,00</strong>
-        </div>
+      </div>
 
-        <form class="formulario-entrega" id="formulario-entrega" novalidate>
-          <h3>Entrega e pagamento</h3>
-
-          <div class="campo-formulario">
-            <label for="nome-cliente">Nome</label>
-            <input
-              id="nome-cliente"
-              name="nome"
-              type="text"
-              placeholder="Como podemos chamar você?"
-              autocomplete="name"
-              required
-            />
-          </div>
-
-          <div class="campo-formulario">
-            <label for="endereco-entrega">Endereço completo</label>
-            <input
-              id="endereco-entrega"
-              name="endereco"
-              type="text"
-              placeholder="Rua, número, bairro e complemento"
-              autocomplete="street-address"
-              required
-            />
-          </div>
-
-          <div class="campo-formulario">
-            <label for="forma-pagamento">Forma de pagamento</label>
-            <select id="forma-pagamento" name="pagamento">
-              <option value="Pix">Pix</option>
-              <option value="Cartão de Crédito">Cartão de Crédito</option>
-              <option value="Cartão de Débito">Cartão de Débito</option>
-              <option value="Dinheiro">Dinheiro</option>
-            </select>
-          </div>
-
-          <div class="campo-formulario campo-troco hidden" data-campo-troco>
-            <label for="troco">Troco para quanto?</label>
-            <input
-              id="troco"
-              name="troco"
-              type="number"
-              min="0"
-              step="0.01"
-              inputmode="decimal"
-              placeholder="0,00"
-              disabled
-            />
-          </div>
-
-          <button class="btn-finalizar-carrinho" type="submit">
-            <i class="fab fa-whatsapp" aria-hidden="true"></i>
-            Finalizar no WhatsApp
-          </button>
-        </form>
+      <div class="carrinho-footer">
+        <button
+          class="btn-finalizar-carrinho"
+          type="submit"
+          form="formulario-entrega"
+        >
+          <i class="fab fa-whatsapp" aria-hidden="true"></i>
+          Finalizar no WhatsApp
+        </button>
       </div>
     </aside>
 
