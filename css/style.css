@@ -333,6 +333,15 @@ main {
   transform: translateY(-1px);
 }
 
+.btn-indisponivel,
+.btn-indisponivel:hover {
+  background-color: #4a4a4a;
+  color: #f2f2f2;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
 .btn-cart:focus-visible,
 .carrinho-fechar:focus-visible,
 .btn-finalizar-carrinho:focus-visible,

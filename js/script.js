@@ -19,6 +19,7 @@ const changeInput = document.querySelector("#troco");
 
 let cardapio = [];
 let carrinho = [];
+let restauranteAberto = true;
 let turnoAtual = "almoco";
 let elementoFocadoAntesDoCarrinho = null;
 
@@ -79,6 +80,13 @@ function calcularValoresDoCarrinho() {
 }
 
 function adicionarAoCarrinho(id) {
+  if (!restauranteAberto) {
+    window.alert(
+      "O Bistrô está fechado no momento. Não é possível adicionar itens.",
+    );
+    return;
+  }
+
   const prato = cardapio.find((item) => item.id === id);
 
   if (!prato) {
@@ -155,7 +163,9 @@ function atualizarCarrinho() {
 
       const itemTotal = document.createElement("span");
       itemTotal.className = "carrinho-item-total";
-      itemTotal.textContent = priceFormatter.format(item.preco * item.quantidade);
+      itemTotal.textContent = priceFormatter.format(
+        item.preco * item.quantidade,
+      );
 
       const heading = document.createElement("div");
       heading.className = "carrinho-item-heading";
@@ -164,10 +174,7 @@ function atualizarCarrinho() {
       const quantityControls = document.createElement("div");
       quantityControls.className = "carrinho-quantidade";
       quantityControls.setAttribute("role", "group");
-      quantityControls.setAttribute(
-        "aria-label",
-        `Quantidade de ${item.nome}`,
-      );
+      quantityControls.setAttribute("aria-label", `Quantidade de ${item.nome}`);
 
       const decreaseButton = document.createElement("button");
       decreaseButton.type = "button";
@@ -186,8 +193,12 @@ function atualizarCarrinho() {
 
       const increaseButton = document.createElement("button");
       increaseButton.type = "button";
-      increaseButton.setAttribute("aria-label", `Adicionar mais um ${item.nome}`);
-      increaseButton.innerHTML = '<i class="fas fa-plus" aria-hidden="true"></i>';
+      increaseButton.setAttribute(
+        "aria-label",
+        `Adicionar mais um ${item.nome}`,
+      );
+      increaseButton.innerHTML =
+        '<i class="fas fa-plus" aria-hidden="true"></i>';
       increaseButton.addEventListener("click", () =>
         alterarQuantidade(item.id, 1),
       );
@@ -229,7 +240,9 @@ function finalizarPedido(event) {
   event.preventDefault();
 
   if (carrinho.length === 0) {
-    window.alert("Seu carrinho está vazio. Adicione um item antes de finalizar.");
+    window.alert(
+      "Seu carrinho está vazio. Adicione um item antes de finalizar.",
+    );
     return;
   }
 
@@ -276,41 +289,52 @@ function finalizarPedido(event) {
   window.open(url, "_blank", "noopener,noreferrer");
 }
 
-function createMenuCard(prato) {
+function createMenuCard(item) {
   const card = document.createElement("article");
   card.className = "menu-item";
 
   const image = document.createElement("img");
-  image.src = prato.imagem;
-  image.alt = prato.nome;
+  image.src = item.imagem;
+  image.alt = item.nome;
 
   const info = document.createElement("div");
   info.className = "item-info";
 
   const title = document.createElement("h4");
-  title.textContent = prato.nome;
+  title.textContent = item.nome;
 
   const description = document.createElement("p");
-  description.textContent = prato.descricao;
+  description.textContent = item.descricao;
 
   const footer = document.createElement("div");
   footer.className = "item-footer";
 
   const price = document.createElement("span");
   price.className = "price";
-  price.textContent = priceFormatter.format(prato.preco);
+  price.textContent = priceFormatter.format(item.preco);
 
   const orderButton = document.createElement("button");
-  orderButton.className = "btn-cart";
   orderButton.type = "button";
-  orderButton.dataset.itemId = prato.id;
-  orderButton.setAttribute(
-    "aria-label",
-    `Adicionar ${prato.nome} ao carrinho`,
-  );
-  orderButton.innerHTML =
-    '<i class="fas fa-plus" aria-hidden="true"></i><span>Adicionar</span><span class="item-quantity" aria-hidden="true" hidden>0</span>';
-  orderButton.addEventListener("click", () => adicionarAoCarrinho(prato.id));
+
+  if (item.turno.includes(turnoAtual)) {
+    orderButton.className = "btn-cart";
+    orderButton.dataset.itemId = item.id;
+    orderButton.setAttribute(
+      "aria-label",
+      `Adicionar ${item.nome} ao carrinho`,
+    );
+    orderButton.innerHTML =
+      '<i class="fas fa-plus" aria-hidden="true"></i><span>Adicionar ao Carrinho</span><span class="item-quantity" aria-hidden="true" hidden>0</span>';
+    orderButton.setAttribute(
+      "onclick",
+      `adicionarAoCarrinho(${item.id})`,
+    );
+  } else {
+    orderButton.className = "btn-cart btn-indisponivel";
+    orderButton.disabled = true;
+    orderButton.setAttribute("aria-label", `${item.nome} indisponível agora`);
+    orderButton.textContent = "Indisponível agora";
+  }
 
   footer.append(price, orderButton);
   info.append(title, description, footer);
@@ -320,13 +344,13 @@ function createMenuCard(prato) {
 
 function renderMenu(cardapio, turno) {
   const grid = document.querySelector(`[data-menu-grid="${turno}"]`);
-  const pratosDoTurno = cardapio.filter(
-    (prato) => !prato.pratoDoDia && prato.turno.includes(turno),
+  const itensDoCardapio = cardapio.filter(
+    (item) => !item.pratoDoDia && item.turno.includes(turno),
   );
 
   grid.replaceChildren();
 
-  if (pratosDoTurno.length === 0) {
+  if (itensDoCardapio.length === 0) {
     const feedback = document.createElement("p");
     feedback.className = "menu-feedback";
     feedback.textContent = "Ainda não há opções disponíveis para este período.";
@@ -334,7 +358,7 @@ function renderMenu(cardapio, turno) {
     return;
   }
 
-  pratosDoTurno.forEach((prato) => grid.append(createMenuCard(prato)));
+  itensDoCardapio.forEach((item) => grid.append(createMenuCard(item)));
 }
 
 function renderChefSuggestion(cardapio) {
@@ -343,6 +367,15 @@ function renderChefSuggestion(cardapio) {
 
   if (!sugestao) return;
 
+  const disponivelNoTurnoAtual = sugestao.turno.includes(turnoAtual);
+  const classeBotao = disponivelNoTurnoAtual
+    ? "btn-cart"
+    : "btn-cart btn-indisponivel";
+  const atributoDisabled = disponivelNoTurnoAtual ? "" : "disabled";
+  const textoBotao = disponivelNoTurnoAtual
+    ? "Adicionar ao Carrinho"
+    : "Indisponível agora";
+
   const text = document.createElement("div");
   text.className = "suggestion-text";
   text.innerHTML = `
@@ -350,9 +383,9 @@ function renderChefSuggestion(cardapio) {
         <h2></h2>
         <p></p>
         <p class="price-hero"></p>
-        <button type="button" class="btn-cart" aria-label="Adicionar a sugestão do chef ao carrinho">
+        <button type="button" class="${classeBotao}" ${atributoDisabled} aria-label="${disponivelNoTurnoAtual ? "Adicionar a sugestão do chef ao carrinho" : "Sugestão do chef indisponível agora"}">
             <i class="fas fa-plus" aria-hidden="true"></i>
-            <span>Adicionar ao Carrinho</span>
+            <span>${textoBotao}</span>
             <span class="item-quantity" aria-hidden="true" hidden>0</span>
         </button>
     `;
@@ -361,10 +394,13 @@ function renderChefSuggestion(cardapio) {
   text.querySelector(".price-hero").textContent = priceFormatter.format(
     sugestao.preco,
   );
-  text.querySelector(".btn-cart").dataset.itemId = sugestao.id;
-  text
-    .querySelector(".btn-cart")
-    .addEventListener("click", () => adicionarAoCarrinho(sugestao.id));
+  const suggestionButton = text.querySelector(".btn-cart");
+  if (disponivelNoTurnoAtual) {
+    suggestionButton.dataset.itemId = sugestao.id;
+    suggestionButton.addEventListener("click", () =>
+      adicionarAoCarrinho(sugestao.id),
+    );
+  }
 
   const imageWrapper = document.createElement("div");
   imageWrapper.className = "suggestion-img";
@@ -378,6 +414,12 @@ function renderChefSuggestion(cardapio) {
 
 function showMenu(turno) {
   turnoAtual = turno;
+
+  if (cardapio.length > 0) {
+    renderChefSuggestion(cardapio);
+    renderMenu(cardapio, "almoco");
+    renderMenu(cardapio, "jantar");
+  }
 
   menuSections.forEach((section) => {
     section.classList.toggle("hidden-section", section.id !== turno);
