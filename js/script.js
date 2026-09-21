@@ -33,8 +33,13 @@ function createMenuCard(prato) {
   const orderButton = document.createElement("button");
   orderButton.className = "btn-cart";
   orderButton.type = "button";
-  orderButton.setAttribute("aria-label", `Pedir ${prato.nome} pelo WhatsApp`);
-  orderButton.innerHTML = '<i class="fab fa-whatsapp" aria-hidden="true"></i>';
+  orderButton.setAttribute(
+    "aria-label",
+    `Adicionar ${prato.nome} ao carrinho`,
+  );
+  orderButton.innerHTML =
+    '<i class="fas fa-cart-plus" aria-hidden="true"></i><span>Adicionar</span>';
+  orderButton.addEventListener("click", () => adicionarAoCarrinho(prato.id));
 
   footer.append(price, orderButton);
   info.append(title, description, footer);

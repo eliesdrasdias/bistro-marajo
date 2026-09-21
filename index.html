@@ -59,6 +59,50 @@
       </section>
     </main>
 
+    <div class="carrinho-overlay" data-carrinho-overlay></div>
+
+    <aside
+      id="carrinho"
+      class="carrinho-sidebar"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-labelledby="carrinho-titulo"
+    >
+      <div class="carrinho-header">
+        <h2 id="carrinho-titulo">Seu Pedido</h2>
+        <button
+          class="carrinho-fechar"
+          type="button"
+          aria-label="Fechar carrinho"
+        >
+          &times;
+        </button>
+      </div>
+
+      <div id="itens-carrinho" class="itens-carrinho"></div>
+
+      <div class="carrinho-resumo">
+        <div class="carrinho-total-linha">
+          <span>Subtotal</span>
+          <strong id="subtotal-carrinho">R$ 0,00</strong>
+        </div>
+        <div class="carrinho-total-linha">
+          <span>Taxa de Entrega</span>
+          <strong id="taxa-entrega">R$ 0,00</strong>
+        </div>
+        <div class="carrinho-total-linha carrinho-total-final">
+          <span>Total</span>
+          <strong id="total-carrinho">R$ 0,00</strong>
+        </div>
+
+        <button class="btn-finalizar-carrinho" type="button">
+          <i class="fab fa-whatsapp" aria-hidden="true"></i>
+          Finalizar no WhatsApp
+        </button>
+      </div>
+    </aside>
+
     <footer>
       <a
         class="footer-location-link"
