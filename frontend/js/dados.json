@@ -6,7 +6,7 @@
     "preco": 25.0,
     "turno": ["almoco"],
     "categoria": "comida_normal",
-    "imagem": "assets/dourada-a-milanesa.jpg",
+    "imagem": "../assets/dourada-a-milanesa.jpg",
     "pratoDoDia": false
   },
   {
@@ -16,7 +16,7 @@
     "preco": 25.0,
     "turno": ["almoco", "jantar"],
     "categoria": "comida_normal",
-    "imagem": "assets/strogonoff.jpg",
+    "imagem": "../assets/strogonoff.jpg",
     "pratoDoDia": false
   },
   {
@@ -26,7 +26,7 @@
     "preco": 30.0,
     "turno": ["almoco"],
     "categoria": "comida_normal",
-    "imagem": "assets/alcatra.jpg",
+    "imagem": "../assets/alcatra.jpg",
     "pratoDoDia": true
   },
   {
@@ -36,7 +36,7 @@
     "preco": 15.0,
     "turno": ["jantar"],
     "categoria": "caldo",
-    "imagem": "assets/sopa-de-carne.jpg",
+    "imagem": "../assets/sopa-de-carne.jpg",
     "pratoDoDia": false
   }
 ]

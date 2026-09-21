@@ -16,6 +16,8 @@ const deliveryAddressInput = document.querySelector("#endereco-entrega");
 const paymentSelect = document.querySelector("#forma-pagamento");
 const changeField = document.querySelector("[data-campo-troco]");
 const changeInput = document.querySelector("#troco");
+const scriptUrl = document.currentScript?.src ?? new URL("js/", document.baseURI);
+const menuDataUrl = new URL("dados.json", scriptUrl);
 
 let cardapio = [];
 let carrinho = [];
@@ -444,11 +446,15 @@ function showLoadError() {
 
 async function loadMenu() {
   try {
-    const response = await fetch("js/dados.json");
+    const response = await fetch(menuDataUrl);
     if (!response.ok)
       throw new Error(`Erro ao carregar cardápio: ${response.status}`);
 
-    cardapio = await response.json();
+    const dados = await response.json();
+    cardapio = dados.map((item) => ({
+      ...item,
+      imagem: new URL(item.imagem, response.url).href,
+    }));
     renderChefSuggestion(cardapio);
     renderMenu(cardapio, "almoco");
     renderMenu(cardapio, "jantar");

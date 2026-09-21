@@ -10,7 +10,7 @@ Não há frameworks ou backend nesta versão: toda a experiência é executada n
 
 ## Funcionalidades
 
-- Renderização dinâmica dos pratos a partir de [`js/dados.json`](js/dados.json).
+- Renderização dinâmica dos pratos a partir de [`frontend/js/dados.json`](frontend/js/dados.json).
 - Abas para alternar e filtrar o cardápio entre **Almoço** e **Jantar**.
 - Exibição de pratos em mais de um período, conforme o campo `turno` do JSON.
 - Seção **Sugestão do Chef** gerada dinamicamente pelo campo `pratoDoDia`.
@@ -31,13 +31,14 @@ Não há frameworks ou backend nesta versão: toda a experiência é executada n
 
 ```text
 .
-├── assets/             # Imagens dos pratos
-├── css/
-│   └── style.css        # Estilos e responsividade
-├── js/
-│   ├── dados.json       # Fonte de dados do cardápio
-│   └── script.js        # Renderização, abas e consumo do JSON
-├── index.html
+├── frontend/
+│   ├── assets/          # Imagens dos pratos
+│   ├── css/
+│   │   └── style.css    # Estilos e responsividade
+│   ├── js/
+│   │   ├── dados.json   # Fonte de dados do cardápio
+│   │   └── script.js    # Renderização, abas e consumo do JSON
+│   └── index.html
 └── README.md
 ```
 
@@ -49,7 +50,7 @@ Como o projeto usa a Fetch API para carregar o arquivo JSON, ele deve ser servid
 
 1. Abra a pasta do projeto no VS Code.
 2. Instale a extensão **Live Server**, caso ainda não a tenha.
-3. Clique com o botão direito em `index.html` e escolha **Open with Live Server**.
+3. Clique com o botão direito em `frontend/index.html` e escolha **Open with Live Server**.
 4. Acesse o endereço exibido no navegador, normalmente `http://127.0.0.1:5500`.
 
 ### Opção 2: servidor HTTP com Python
@@ -57,7 +58,7 @@ Como o projeto usa a Fetch API para carregar o arquivo JSON, ele deve ser servid
 No terminal, dentro da pasta do projeto, execute:
 
 ```bash
-python3 -m http.server 8000
+python3 -m http.server 8000 --directory frontend
 ```
 
 Depois, abra no navegador:
@@ -68,7 +69,7 @@ http://localhost:8000
 
 ## Estrutura dos Dados
 
-Cada item em `js/dados.json` segue esta estrutura:
+Cada item em `frontend/js/dados.json` segue esta estrutura:
 
 ```json
 {
@@ -78,7 +79,7 @@ Cada item em `js/dados.json` segue esta estrutura:
   "preco": 25.0,
   "turno": ["almoco", "jantar"],
   "categoria": "comida_normal",
-  "imagem": "assets/imagem-do-prato.jpg",
+  "imagem": "../assets/imagem-do-prato.jpg",
   "pratoDoDia": false
 }
 ```
