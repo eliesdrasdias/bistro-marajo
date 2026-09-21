@@ -170,7 +170,9 @@ function createMenuCard(prato) {
 
 function renderMenu(cardapio, turno) {
   const grid = document.querySelector(`[data-menu-grid="${turno}"]`);
-  const pratosDoTurno = cardapio.filter((prato) => prato.turno.includes(turno));
+  const pratosDoTurno = cardapio.filter(
+    (prato) => !prato.pratoDoDia && prato.turno.includes(turno),
+  );
 
   grid.replaceChildren();
 
@@ -198,15 +200,19 @@ function renderChefSuggestion(cardapio) {
         <h2></h2>
         <p></p>
         <p class="price-hero"></p>
-        <a href="#" class="btn-cta" aria-label="Pedir a sugestão do chef pelo WhatsApp">
-            <i class="fab fa-whatsapp" aria-hidden="true"></i> Pedir Agora
-        </a>
+        <button type="button" class="btn-cart" aria-label="Adicionar a sugestão do chef ao carrinho">
+            <i class="fas fa-cart-plus" aria-hidden="true"></i>
+            <span>Adicionar ao Carrinho</span>
+        </button>
     `;
   text.querySelector("h2").textContent = sugestao.nome;
   text.querySelector("p:not(.price-hero)").textContent = sugestao.descricao;
   text.querySelector(".price-hero").textContent = priceFormatter.format(
     sugestao.preco,
   );
+  text
+    .querySelector(".btn-cart")
+    .addEventListener("click", () => adicionarAoCarrinho(sugestao.id));
 
   const imageWrapper = document.createElement("div");
   imageWrapper.className = "suggestion-img";
