@@ -1,10 +1,131 @@
 const heroSuggestion = document.querySelector("#hero-suggestion");
 const menuSections = document.querySelectorAll(".menu-section");
 const tabButtons = document.querySelectorAll(".tab-btn");
+const cartSidebar = document.querySelector("#carrinho");
+const cartOverlay = document.querySelector("[data-carrinho-overlay]");
+const cartItems = document.querySelector("#itens-carrinho");
+const cartSubtotal = document.querySelector("#subtotal-carrinho");
+const deliveryFee = document.querySelector("#taxa-entrega");
+const cartTotal = document.querySelector("#total-carrinho");
+const closeCartButton = document.querySelector(".carrinho-fechar");
+const checkoutButton = document.querySelector(".btn-finalizar-carrinho");
+
+let cardapio = [];
+let carrinho = [];
+let turnoAtual = "almoco";
+
 const priceFormatter = new Intl.NumberFormat("pt-BR", {
   style: "currency",
   currency: "BRL",
 });
+
+function abrirCarrinho() {
+  cartSidebar.classList.add("is-open");
+  cartOverlay.classList.add("is-open");
+  cartSidebar.setAttribute("aria-hidden", "false");
+}
+
+function fecharCarrinho() {
+  cartSidebar.classList.remove("is-open");
+  cartOverlay.classList.remove("is-open");
+  cartSidebar.setAttribute("aria-hidden", "true");
+}
+
+function agruparItensDoCarrinho() {
+  return carrinho.reduce((itensAgrupados, prato) => {
+    const itemExistente = itensAgrupados.find((item) => item.id === prato.id);
+
+    if (itemExistente) {
+      itemExistente.quantidade += 1;
+    } else {
+      itensAgrupados.push({ ...prato, quantidade: 1 });
+    }
+
+    return itensAgrupados;
+  }, []);
+}
+
+function calcularValoresDoCarrinho() {
+  const subtotal = carrinho.reduce((soma, prato) => soma + prato.preco, 0);
+  const temComidaNormal = carrinho.some(
+    (prato) => prato.categoria === "comida_normal",
+  );
+  const taxaEntrega =
+    turnoAtual === "jantar" && temComidaNormal && carrinho.length > 0 ? 3 : 0;
+
+  return { subtotal, taxaEntrega, total: subtotal + taxaEntrega };
+}
+
+function adicionarAoCarrinho(id) {
+  const prato = cardapio.find((item) => item.id === id);
+
+  if (!prato) {
+    console.error(`Prato com o ID ${id} não encontrado.`);
+    return;
+  }
+
+  carrinho.push(prato);
+  atualizarCarrinho();
+  abrirCarrinho();
+}
+
+function atualizarCarrinho() {
+  cartItems.replaceChildren();
+
+  if (carrinho.length === 0) {
+    const emptyMessage = document.createElement("p");
+    emptyMessage.className = "menu-feedback";
+    emptyMessage.textContent = "Seu carrinho está vazio.";
+    cartItems.append(emptyMessage);
+  } else {
+    agruparItensDoCarrinho().forEach((item) => {
+      const cartItem = document.createElement("article");
+      cartItem.className = "carrinho-item";
+
+      const name = document.createElement("strong");
+      name.textContent = item.nome;
+
+      const details = document.createElement("span");
+      details.textContent = `${item.quantidade}x ${priceFormatter.format(item.preco)}`;
+
+      const itemTotal = document.createElement("span");
+      itemTotal.textContent = priceFormatter.format(item.preco * item.quantidade);
+
+      cartItem.append(name, details, itemTotal);
+      cartItems.append(cartItem);
+    });
+  }
+
+  const valores = calcularValoresDoCarrinho();
+  cartSubtotal.textContent = priceFormatter.format(valores.subtotal);
+  deliveryFee.textContent = priceFormatter.format(valores.taxaEntrega);
+  cartTotal.textContent = priceFormatter.format(valores.total);
+  checkoutButton.disabled = carrinho.length === 0;
+}
+
+function finalizarPedido() {
+  if (carrinho.length === 0) return;
+
+  const itens = agruparItensDoCarrinho();
+  const { subtotal, taxaEntrega, total } = calcularValoresDoCarrinho();
+  const linhasDosItens = itens.map(
+    (item) =>
+      `- ${item.quantidade}x ${item.nome} — ${priceFormatter.format(item.preco * item.quantidade)}`,
+  );
+  const mensagem = [
+    "Olá! Gostaria de fazer o seguinte pedido:",
+    "",
+    ...linhasDosItens,
+    "",
+    `Subtotal: ${priceFormatter.format(subtotal)}`,
+    `Taxa de entrega: ${priceFormatter.format(taxaEntrega)}`,
+    `Total: ${priceFormatter.format(total)}`,
+  ].join("\n");
+  const numeroWhatsapp = "SEU_NUMERO";
+  const url = `https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent(mensagem)}`;
+
+  window.open(url, "_blank", "noopener,noreferrer");
+}
 
 function createMenuCard(prato) {
   const card = document.createElement("article");
@@ -98,6 +219,8 @@ function renderChefSuggestion(cardapio) {
 }
 
 function showMenu(turno) {
+  turnoAtual = turno;
+
   menuSections.forEach((section) => {
     section.classList.toggle("hidden-section", section.id !== turno);
   });
@@ -107,6 +230,8 @@ function showMenu(turno) {
     button.classList.toggle("active", isActive);
     button.setAttribute("aria-selected", String(isActive));
   });
+
+  atualizarCarrinho();
 }
 
 function showLoadError() {
@@ -123,7 +248,7 @@ async function loadMenu() {
     if (!response.ok)
       throw new Error(`Erro ao carregar cardápio: ${response.status}`);
 
-    const cardapio = await response.json();
+    cardapio = await response.json();
     renderChefSuggestion(cardapio);
     renderMenu(cardapio, "almoco");
     renderMenu(cardapio, "jantar");
@@ -137,4 +262,12 @@ tabButtons.forEach((button) => {
   button.addEventListener("click", () => showMenu(button.dataset.turno));
 });
 
+closeCartButton.addEventListener("click", fecharCarrinho);
+cartOverlay.addEventListener("click", fecharCarrinho);
+checkoutButton.addEventListener("click", finalizarPedido);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") fecharCarrinho();
+});
+
+atualizarCarrinho();
 loadMenu();
