@@ -203,10 +203,18 @@ main {
   padding-bottom: 10px;
 }
 
-.menu-grid {
+.menu-grid,
+.menu-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: 1fr;
   gap: 20px;
+}
+
+@media (min-width: 600px) {
+  .menu-grid,
+  .menu-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .menu-item {
