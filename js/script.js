@@ -8,9 +8,14 @@ const cartSubtotal = document.querySelector("#subtotal-carrinho");
 const deliveryFee = document.querySelector("#taxa-entrega");
 const cartTotal = document.querySelector("#total-carrinho");
 const closeCartButton = document.querySelector(".carrinho-fechar");
-const checkoutButton = document.querySelector(".btn-finalizar-carrinho");
 const floatingCartButton = document.querySelector(".carrinho-flutuante");
 const cartCounter = document.querySelector("[data-carrinho-contador]");
+const deliveryForm = document.querySelector("#formulario-entrega");
+const customerNameInput = document.querySelector("#nome-cliente");
+const deliveryAddressInput = document.querySelector("#endereco-entrega");
+const paymentSelect = document.querySelector("#forma-pagamento");
+const changeField = document.querySelector("[data-campo-troco]");
+const changeInput = document.querySelector("#troco");
 
 let cardapio = [];
 let carrinho = [];
@@ -197,7 +202,6 @@ function atualizarCarrinho() {
   cartSubtotal.textContent = priceFormatter.format(valores.subtotal);
   deliveryFee.textContent = priceFormatter.format(valores.taxaEntrega);
   cartTotal.textContent = priceFormatter.format(valores.total);
-  checkoutButton.disabled = carrinho.length === 0;
   cartCounter.textContent = carrinho.length;
   cartCounter.hidden = carrinho.length === 0;
   floatingCartButton.setAttribute(
@@ -209,24 +213,63 @@ function atualizarCarrinho() {
   atualizarContadoresDoMenu();
 }
 
-function finalizarPedido() {
-  if (carrinho.length === 0) return;
+function atualizarCampoTroco() {
+  if (paymentSelect.value === "Dinheiro") {
+    changeField.classList.remove("hidden");
+    changeInput.disabled = false;
+    return;
+  }
+
+  changeField.classList.add("hidden");
+  changeInput.value = "";
+  changeInput.disabled = true;
+}
+
+function finalizarPedido(event) {
+  event.preventDefault();
+
+  if (carrinho.length === 0) {
+    window.alert("Seu carrinho está vazio. Adicione um item antes de finalizar.");
+    return;
+  }
+
+  const nome = customerNameInput.value.trim();
+  const endereco = deliveryAddressInput.value.trim();
+
+  if (!nome || !endereco) {
+    window.alert("Preencha o nome e o endereço para continuar com a entrega.");
+    (!nome ? customerNameInput : deliveryAddressInput).focus();
+    return;
+  }
 
   const itens = agruparItensDoCarrinho();
   const { subtotal, taxaEntrega, total } = calcularValoresDoCarrinho();
+  const formaPagamento = paymentSelect.value;
+  const valorTroco = Number(changeInput.value);
   const linhasDosItens = itens.map(
     (item) =>
       `- ${item.quantidade}x ${item.nome} — ${priceFormatter.format(item.preco * item.quantidade)}`,
   );
-  const mensagem = [
-    "Olá! Gostaria de fazer o seguinte pedido:",
+  const linhasDaMensagem = [
+    "*Novo Pedido!*",
+    `*Nome:* ${nome}`,
+    `*Endereço:* ${endereco}`,
     "",
+    "*Itens:*",
     ...linhasDosItens,
     "",
-    `Subtotal: ${priceFormatter.format(subtotal)}`,
-    `Taxa de entrega: ${priceFormatter.format(taxaEntrega)}`,
-    `Total: ${priceFormatter.format(total)}`,
-  ].join("\n");
+    `*Subtotal:* ${priceFormatter.format(subtotal)}`,
+    `*Taxa de Entrega:* ${priceFormatter.format(taxaEntrega)}`,
+    `*Total:* ${priceFormatter.format(total)}`,
+    "",
+    `*Pagamento:* ${formaPagamento}`,
+  ];
+
+  if (formaPagamento === "Dinheiro" && valorTroco > 0) {
+    linhasDaMensagem.push(`*Troco para:* ${priceFormatter.format(valorTroco)}`);
+  }
+
+  const mensagem = linhasDaMensagem.join("\n");
   const numeroWhatsapp = "SEU_NUMERO";
   const url = `https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent(mensagem)}`;
 
@@ -380,10 +423,12 @@ tabButtons.forEach((button) => {
 closeCartButton.addEventListener("click", fecharCarrinho);
 cartOverlay.addEventListener("click", fecharCarrinho);
 floatingCartButton.addEventListener("click", abrirCarrinho);
-checkoutButton.addEventListener("click", finalizarPedido);
+paymentSelect.addEventListener("change", atualizarCampoTroco);
+deliveryForm.addEventListener("submit", finalizarPedido);
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") fecharCarrinho();
 });
 
+atualizarCampoTroco();
 atualizarCarrinho();
 loadMenu();
