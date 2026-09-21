@@ -1,56 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bistrô Marajó | Cardápio Digital</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
 
-<body>
-
+  <body>
     <header>
-        <div class="header-container">
-
-            <div class="logo-container">
-                <h1>Bistrô Marajó</h1>
-                <p>Culinária Afetiva</p>
-            </div>
-
-            <div class="status-badge open">Aberto Agora</div>
-
+      <div class="header-container">
+        <div class="logo-container">
+          <h1>Bistrô Marajó</h1>
+          <p>Culinária Afetiva</p>
         </div>
+
+        <div class="status-badge open">Aberto Agora</div>
+      </div>
     </header>
 
     <main>
-        <section id="hero-suggestion"></section>
+      <section id="hero-suggestion"></section>
 
-        <nav class="menu-tabs" aria-label="Período do cardápio">
-            <button class="tab-btn active" type="button" data-turno="almoco" aria-controls="almoco" aria-selected="true">☀️ Almoço</button>
-            <button class="tab-btn" type="button" data-turno="jantar" aria-controls="jantar" aria-selected="false">🌙 Jantar</button>
-        </nav>
+      <nav class="menu-tabs" aria-label="Período do cardápio">
+        <button
+          class="tab-btn active"
+          type="button"
+          data-turno="almoco"
+          aria-controls="almoco"
+          aria-selected="true"
+        >
+          ☀️ Almoço
+        </button>
+        <button
+          class="tab-btn"
+          type="button"
+          data-turno="jantar"
+          aria-controls="jantar"
+          aria-selected="false"
+        >
+          🌙 Jantar
+        </button>
+      </nav>
 
-        <section id="almoco" class="menu-section active-section">
-            <h3 class="section-title">Para o seu Almoço</h3>
+      <section id="almoco" class="menu-section active-section">
+        <h3 class="section-title">Para o seu Almoço</h3>
 
-            <div class="menu-grid" data-menu-grid="almoco" aria-live="polite"></div>
-        </section>
+        <div class="menu-grid" data-menu-grid="almoco" aria-live="polite"></div>
+      </section>
 
-        <section id="jantar" class="menu-section hidden-section">
-            <h3 class="section-title">Especiais da Noite</h3>
-            <div class="menu-grid" data-menu-grid="jantar" aria-live="polite"></div>
-        </section>
-
+      <section id="jantar" class="menu-section hidden-section">
+        <h3 class="section-title">Especiais da Noite</h3>
+        <div class="menu-grid" data-menu-grid="jantar" aria-live="polite"></div>
+      </section>
     </main>
 
     <footer>
-        <p>📍 Passagem Andrelino Nunes, 82 - Breves, PA</p>
-        <p>&copy; 2026 Bistrô Marajó</p>
+      <a
+        class="footer-location-link"
+        href="https://maps.app.goo.gl/2eJoMULDanDwJuk9A"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+        <span>Andrelino Nunes, 82</span>
+      </a>
+      <p>&copy; 2026 Bistrô Marajó</p>
     </footer>
 
     <script src="js/script.js"></script>
-</body>
-
+  </body>
 </html>
