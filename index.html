@@ -59,6 +59,18 @@
       </section>
     </main>
 
+    <button
+      class="carrinho-flutuante"
+      type="button"
+      aria-label="Abrir carrinho. Nenhum item adicionado"
+      aria-controls="carrinho"
+      aria-expanded="false"
+    >
+      <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+      <span class="carrinho-flutuante-texto">Ver pedido</span>
+      <span class="carrinho-contador" aria-hidden="true" data-carrinho-contador>0</span>
+    </button>
+
     <div class="carrinho-overlay" data-carrinho-overlay></div>
 
     <aside
@@ -70,7 +82,10 @@
       aria-labelledby="carrinho-titulo"
     >
       <div class="carrinho-header">
-        <h2 id="carrinho-titulo">Seu Pedido</h2>
+        <div>
+          <span class="carrinho-eyebrow">Bistrô Marajó</span>
+          <h2 id="carrinho-titulo">Seu Pedido</h2>
+        </div>
         <button
           class="carrinho-fechar"
           type="button"

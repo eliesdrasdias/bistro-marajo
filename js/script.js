@@ -9,10 +9,13 @@ const deliveryFee = document.querySelector("#taxa-entrega");
 const cartTotal = document.querySelector("#total-carrinho");
 const closeCartButton = document.querySelector(".carrinho-fechar");
 const checkoutButton = document.querySelector(".btn-finalizar-carrinho");
+const floatingCartButton = document.querySelector(".carrinho-flutuante");
+const cartCounter = document.querySelector("[data-carrinho-contador]");
 
 let cardapio = [];
 let carrinho = [];
 let turnoAtual = "almoco";
+let elementoFocadoAntesDoCarrinho = null;
 
 const priceFormatter = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -20,15 +23,29 @@ const priceFormatter = new Intl.NumberFormat("pt-BR", {
 });
 
 function abrirCarrinho() {
+  elementoFocadoAntesDoCarrinho = document.activeElement;
   cartSidebar.classList.add("is-open");
   cartOverlay.classList.add("is-open");
   cartSidebar.setAttribute("aria-hidden", "false");
+  floatingCartButton.setAttribute("aria-expanded", "true");
+  document.body.classList.add("carrinho-aberto");
+  closeCartButton.focus();
 }
 
 function fecharCarrinho() {
+  if (!cartSidebar.classList.contains("is-open")) return;
+
   cartSidebar.classList.remove("is-open");
   cartOverlay.classList.remove("is-open");
   cartSidebar.setAttribute("aria-hidden", "true");
+  floatingCartButton.setAttribute("aria-expanded", "false");
+  document.body.classList.remove("carrinho-aberto");
+
+  if (elementoFocadoAntesDoCarrinho instanceof HTMLElement) {
+    elementoFocadoAntesDoCarrinho.focus();
+  }
+
+  elementoFocadoAntesDoCarrinho = null;
 }
 
 function agruparItensDoCarrinho() {
@@ -66,7 +83,53 @@ function adicionarAoCarrinho(id) {
 
   carrinho.push(prato);
   atualizarCarrinho();
-  abrirCarrinho();
+  destacarAdicao(id);
+}
+
+function alterarQuantidade(id, incremento) {
+  if (incremento > 0) {
+    adicionarAoCarrinho(id);
+    return;
+  }
+
+  const indice = carrinho.findIndex((item) => item.id === id);
+  if (indice === -1) return;
+
+  carrinho.splice(indice, 1);
+  atualizarCarrinho();
+}
+
+function quantidadeDoItem(id) {
+  return carrinho.filter((item) => item.id === id).length;
+}
+
+function destacarAdicao(id) {
+  document.querySelectorAll(`[data-item-id="${id}"]`).forEach((button) => {
+    button.classList.remove("item-adicionado");
+    window.requestAnimationFrame(() => button.classList.add("item-adicionado"));
+  });
+}
+
+function atualizarContadoresDoMenu() {
+  document.querySelectorAll("[data-item-id]").forEach((button) => {
+    const id = Number(button.dataset.itemId);
+    const quantidade = quantidadeDoItem(id);
+    const prato = cardapio.find((item) => item.id === id);
+    const counter = button.querySelector(".item-quantity");
+
+    if (counter) {
+      counter.textContent = quantidade;
+      counter.hidden = quantidade === 0;
+    }
+
+    button.classList.toggle("tem-itens", quantidade > 0);
+    button.setAttribute(
+      "aria-label",
+      quantidade > 0
+        ? `Adicionar mais um ${prato?.nome ?? "item"}. ${quantidade} no carrinho`
+        : `Adicionar ${prato?.nome ?? "item"} ao carrinho`,
+    );
+  });
 }
 
 function atualizarCarrinho() {
@@ -85,13 +148,47 @@ function atualizarCarrinho() {
       const name = document.createElement("strong");
       name.textContent = item.nome;
 
-      const details = document.createElement("span");
-      details.textContent = `${item.quantidade}x ${priceFormatter.format(item.preco)}`;
-
       const itemTotal = document.createElement("span");
+      itemTotal.className = "carrinho-item-total";
       itemTotal.textContent = priceFormatter.format(item.preco * item.quantidade);
 
-      cartItem.append(name, details, itemTotal);
+      const heading = document.createElement("div");
+      heading.className = "carrinho-item-heading";
+      heading.append(name, itemTotal);
+
+      const quantityControls = document.createElement("div");
+      quantityControls.className = "carrinho-quantidade";
+      quantityControls.setAttribute("role", "group");
+      quantityControls.setAttribute(
+        "aria-label",
+        `Quantidade de ${item.nome}`,
+      );
+
+      const decreaseButton = document.createElement("button");
+      decreaseButton.type = "button";
+      decreaseButton.setAttribute("aria-label", `Remover um ${item.nome}`);
+      decreaseButton.innerHTML =
+        item.quantidade === 1
+          ? '<i class="fas fa-trash-alt" aria-hidden="true"></i>'
+          : '<i class="fas fa-minus" aria-hidden="true"></i>';
+      decreaseButton.addEventListener("click", () =>
+        alterarQuantidade(item.id, -1),
+      );
+
+      const quantity = document.createElement("span");
+      quantity.textContent = item.quantidade;
+      quantity.setAttribute("aria-live", "polite");
+
+      const increaseButton = document.createElement("button");
+      increaseButton.type = "button";
+      increaseButton.setAttribute("aria-label", `Adicionar mais um ${item.nome}`);
+      increaseButton.innerHTML = '<i class="fas fa-plus" aria-hidden="true"></i>';
+      increaseButton.addEventListener("click", () =>
+        alterarQuantidade(item.id, 1),
+      );
+
+      quantityControls.append(decreaseButton, quantity, increaseButton);
+      cartItem.append(heading, quantityControls);
       cartItems.append(cartItem);
     });
   }
@@ -101,6 +198,15 @@ function atualizarCarrinho() {
   deliveryFee.textContent = priceFormatter.format(valores.taxaEntrega);
   cartTotal.textContent = priceFormatter.format(valores.total);
   checkoutButton.disabled = carrinho.length === 0;
+  cartCounter.textContent = carrinho.length;
+  cartCounter.hidden = carrinho.length === 0;
+  floatingCartButton.setAttribute(
+    "aria-label",
+    carrinho.length === 0
+      ? "Abrir carrinho. Nenhum item adicionado"
+      : `Abrir carrinho. ${carrinho.length} ${carrinho.length === 1 ? "item" : "itens"} adicionado${carrinho.length === 1 ? "" : "s"}`,
+  );
+  atualizarContadoresDoMenu();
 }
 
 function finalizarPedido() {
@@ -154,12 +260,13 @@ function createMenuCard(prato) {
   const orderButton = document.createElement("button");
   orderButton.className = "btn-cart";
   orderButton.type = "button";
+  orderButton.dataset.itemId = prato.id;
   orderButton.setAttribute(
     "aria-label",
     `Adicionar ${prato.nome} ao carrinho`,
   );
   orderButton.innerHTML =
-    '<i class="fas fa-cart-plus" aria-hidden="true"></i><span>Adicionar</span>';
+    '<i class="fas fa-plus" aria-hidden="true"></i><span>Adicionar</span><span class="item-quantity" aria-hidden="true" hidden>0</span>';
   orderButton.addEventListener("click", () => adicionarAoCarrinho(prato.id));
 
   footer.append(price, orderButton);
@@ -201,8 +308,9 @@ function renderChefSuggestion(cardapio) {
         <p></p>
         <p class="price-hero"></p>
         <button type="button" class="btn-cart" aria-label="Adicionar a sugestão do chef ao carrinho">
-            <i class="fas fa-cart-plus" aria-hidden="true"></i>
+            <i class="fas fa-plus" aria-hidden="true"></i>
             <span>Adicionar ao Carrinho</span>
+            <span class="item-quantity" aria-hidden="true" hidden>0</span>
         </button>
     `;
   text.querySelector("h2").textContent = sugestao.nome;
@@ -210,6 +318,7 @@ function renderChefSuggestion(cardapio) {
   text.querySelector(".price-hero").textContent = priceFormatter.format(
     sugestao.preco,
   );
+  text.querySelector(".btn-cart").dataset.itemId = sugestao.id;
   text
     .querySelector(".btn-cart")
     .addEventListener("click", () => adicionarAoCarrinho(sugestao.id));
@@ -270,6 +379,7 @@ tabButtons.forEach((button) => {
 
 closeCartButton.addEventListener("click", fecharCarrinho);
 cartOverlay.addEventListener("click", fecharCarrinho);
+floatingCartButton.addEventListener("click", abrirCarrinho);
 checkoutButton.addEventListener("click", finalizarPedido);
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") fecharCarrinho();
