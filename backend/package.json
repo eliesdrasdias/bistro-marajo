@@ -9,9 +9,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "devDependencies": {
     "@types/node": "^26.6.2",
+    "dotenv": "^18.0.2",
+    "prisma": "7.8",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }
