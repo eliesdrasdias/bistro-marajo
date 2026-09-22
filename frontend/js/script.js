@@ -16,7 +16,8 @@ const deliveryAddressInput = document.querySelector("#endereco-entrega");
 const paymentSelect = document.querySelector("#forma-pagamento");
 const changeField = document.querySelector("[data-campo-troco]");
 const changeInput = document.querySelector("#troco");
-const scriptUrl = document.currentScript?.src ?? new URL("js/", document.baseURI);
+const scriptUrl =
+  document.currentScript?.src ?? new URL("js/", document.baseURI);
 const menuDataUrl = new URL("dados.json", scriptUrl);
 
 let cardapio = [];
@@ -327,10 +328,7 @@ function createMenuCard(item) {
     );
     orderButton.innerHTML =
       '<i class="fas fa-plus" aria-hidden="true"></i><span>Adicionar ao Carrinho</span><span class="item-quantity" aria-hidden="true" hidden>0</span>';
-    orderButton.setAttribute(
-      "onclick",
-      `adicionarAoCarrinho(${item.id})`,
-    );
+    orderButton.setAttribute("onclick", `adicionarAoCarrinho(${item.id})`);
   } else {
     orderButton.className = "btn-cart btn-indisponivel";
     orderButton.disabled = true;
